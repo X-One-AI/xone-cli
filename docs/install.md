@@ -8,6 +8,7 @@ xone --version
 xone doctor
 xone doctor --install-plan
 xone runbook --head HEAD --dry-run
+xone eval open-source --repos repos.txt --output evaluation.md --format markdown
 ```
 
 ## User Install
@@ -17,6 +18,7 @@ python -m pip install xone-cli
 xone doctor
 xone doctor --install-plan
 xone runbook --head HEAD --dry-run
+xone eval open-source --repos repos.txt --output evaluation.md --format markdown
 ```
 
 `xone doctor` reports missing X-One tools and shows install guidance.
@@ -35,3 +37,33 @@ Current scenario groups:
 git clone --depth 1 https://github.com/owner/repo
 xone runbook --repo repo --head HEAD --dry-run
 ```
+
+## Open-Source Adoption Evaluation
+
+Use `xone eval open-source` when you want a repeatable, sanitized surrogate feedback pass over public repositories.
+
+Create a repo list:
+
+```text
+openai/codex
+https://github.com/docker/mcp-gateway
+```
+
+Metadata-only evaluation:
+
+```bash
+xone eval open-source --repos repos.txt --output evaluation.json --format json
+```
+
+Public shallow-clone evaluation:
+
+```bash
+xone eval open-source --repos repos.txt --clone-root .xone-eval-clones --output evaluation.md --format markdown
+```
+
+Safety boundary:
+
+- The command records public repository metadata and X-One command summaries.
+- It does not label third-party repositories as safe or unsafe.
+- It does not run third-party install scripts, test scripts, containers, or project commands.
+- `--clone-root` performs `git clone --depth 1` only, then runs X-One dry-run commands against the local clones.

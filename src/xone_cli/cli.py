@@ -9,6 +9,7 @@ from collections.abc import Sequence
 from xone_cli import __version__
 from xone_cli.evidence import build_failure_packet, collect_evidence, collect_for_runbook, gate_evidence
 from xone_cli.lab import render_evidence_loop_lab
+from xone_cli.open_source_eval import evaluate_open_source
 from xone_cli.risk import render_risk_context
 from xone_cli.runbook import write_runbook
 from xone_cli.release import print_release_report, verify_release
@@ -70,6 +71,14 @@ def build_parser() -> argparse.ArgumentParser:
     verify.add_argument("--install", action="store_true")
     verify.add_argument("--smoke", action="store_true")
     verify.add_argument("--json", action="store_true")
+
+    eval_parser = subparsers.add_parser("eval", help="run safe X-One evaluation workflows")
+    eval_subparsers = eval_parser.add_subparsers(dest="eval_command")
+    open_source = eval_subparsers.add_parser("open-source", help="evaluate public repositories as surrogate feedback")
+    open_source.add_argument("--repos", type=Path, required=True, help="text file containing owner/repo or GitHub URLs")
+    open_source.add_argument("--clone-root", type=Path, help="optional directory for shallow public clones")
+    open_source.add_argument("--output", type=Path, required=True, help="evaluation output path")
+    open_source.add_argument("--format", choices=("json", "markdown"), default="json")
 
     runbook = subparsers.add_parser("runbook", help="assemble a local X-One evidence runbook")
     _add_evidence_collection_args(runbook, require_base=False)
@@ -144,6 +153,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
         print_release_report(report, as_json=args.json)
         return 0 if report["ok"] else 1
+
+    if args.command == "eval" and args.eval_command == "open-source":
+        return evaluate_open_source(
+            repos_file=args.repos,
+            clone_root=args.clone_root,
+            output=args.output,
+            output_format=args.format,
+        )
 
     if args.command == "runbook":
         code, report, message = collect_for_runbook(

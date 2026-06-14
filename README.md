@@ -34,6 +34,14 @@ xone runbook --head HEAD --dry-run
 
 `xone runbook` auto-detects the local repository default branch. Remote GitHub URLs are not accepted yet; clone the repository first, then pass the local path with `--repo`.
 
+For repeatable open-source adoption checks, use the read-only evaluator:
+
+```bash
+xone eval open-source --repos repos.txt --output evaluation.md --format markdown
+```
+
+Add `--clone-root .xone-eval-clones` when you want X-One to shallow-clone public repositories and run only X-One dry-run commands against those local clones. It does not run third-party install scripts, tests, containers, or project commands.
+
 `xone-cli` orchestrates these X-One tools:
 
 - `agent-pr-evidence`
@@ -54,7 +62,8 @@ Current recommended tool versions:
 - It does not post GitHub comments.
 - It does not modify repositories automatically.
 - It does not make allow/deny runtime enforcement decisions.
-- It does not make hidden network calls.
+- It does not run third-party project scripts.
+- `xone eval open-source` makes explicit GitHub API and `git clone --depth 1` calls only when requested by the command.
 
 ## Docs
 
