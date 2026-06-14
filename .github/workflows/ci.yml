@@ -27,5 +27,4 @@ jobs:
         run: |
           xone --version
           xone doctor --json
-          xone runbook --dry-run
-
+          xone runbook --base HEAD~1 --head HEAD --dry-run

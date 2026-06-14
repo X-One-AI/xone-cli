@@ -26,7 +26,7 @@ xone doctor
 
 ```bash
 xone doctor
-xone runbook --dry-run
+xone runbook --base main --head HEAD --dry-run
 ```
 
 `xone-cli` orchestrates these X-One tools:
@@ -50,4 +50,3 @@ xone runbook --dry-run
 - [Install](./docs/install.md)
 - [Release](./docs/release.md)
 - [Open-source Feedback Ledger](./docs/feedback/open-source-feedback-ledger.md)
-

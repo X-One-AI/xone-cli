@@ -3,7 +3,8 @@ from __future__ import annotations
 import shlex
 import shutil
 import subprocess
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
+from pathlib import Path
 
 from xone_cli.model import CommandResult, DoctorReport, ToolStatus
 
@@ -33,7 +34,13 @@ def install_hint(name: str) -> str:
     return f"python -m pip install {package}"
 
 
-def run_command(command: Sequence[str], *, dry_run: bool = False) -> CommandResult:
+def run_command(
+    command: Sequence[str],
+    *,
+    dry_run: bool = False,
+    cwd: Path | None = None,
+    env: Mapping[str, str] | None = None,
+) -> CommandResult:
     command_list = [str(part) for part in command]
     if dry_run:
         return CommandResult(
@@ -44,13 +51,23 @@ def run_command(command: Sequence[str], *, dry_run: bool = False) -> CommandResu
             dry_run=True,
         )
 
-    completed = subprocess.run(
-        command_list,
-        check=False,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
+    try:
+        completed = subprocess.run(
+            command_list,
+            check=False,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=cwd,
+            env=dict(env) if env is not None else None,
+        )
+    except FileNotFoundError as error:
+        return CommandResult(
+            command=command_list,
+            returncode=127,
+            stdout="",
+            stderr=str(error),
+        )
     return CommandResult(
         command=command_list,
         returncode=completed.returncode,
@@ -87,4 +104,3 @@ def _tool_status(name: str) -> ToolStatus:
 
 def _format_command(command: Sequence[str]) -> str:
     return " ".join(shlex.quote(part) for part in command)
-

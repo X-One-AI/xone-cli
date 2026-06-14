@@ -1,0 +1,12 @@
+{
+  "schema_version": "xone.open_source_sample.v1",
+  "source_url": "https://github.com/modelcontextprotocol/servers",
+  "collected_at": "2026-06-14",
+  "stars": 87186,
+  "forks": 10998,
+  "sample_type": "mcp-server-examples",
+  "observed_pattern": "Official MCP server collection with filesystem, fetch, git, memory, and other tool patterns.",
+  "expected_xone_behavior": "Use as broad MCP ecosystem fixture source; classify filesystem, network, process, and unpinned launch signals as review context.",
+  "feedback_classification": "catalog-update"
+}
+

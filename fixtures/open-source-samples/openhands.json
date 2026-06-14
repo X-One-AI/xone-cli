@@ -1,0 +1,12 @@
+{
+  "schema_version": "xone.open_source_sample.v1",
+  "source_url": "https://github.com/OpenHands/OpenHands",
+  "collected_at": "2026-06-14",
+  "stars": 76929,
+  "forks": 9771,
+  "sample_type": "agent-workflow",
+  "observed_pattern": "AI-driven development agent platform with larger workflow surface area.",
+  "expected_xone_behavior": "Use for workflow-level evidence expectations, not single-command assumptions.",
+  "feedback_classification": "adapter-request"
+}
+

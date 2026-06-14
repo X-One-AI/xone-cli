@@ -1,0 +1,12 @@
+{
+  "schema_version": "xone.open_source_sample.v1",
+  "source_url": "https://github.com/continuedev/continue",
+  "collected_at": "2026-06-14",
+  "stars": 33683,
+  "forks": 4654,
+  "sample_type": "ai-coding-tool",
+  "observed_pattern": "Source-controlled AI checks and CLI workflows for coding assistants.",
+  "expected_xone_behavior": "Compare X-One evidence runbooks against AI check workflows and CI evidence expectations.",
+  "feedback_classification": "adapter-request"
+}
+

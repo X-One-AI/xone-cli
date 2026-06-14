@@ -1,0 +1,12 @@
+{
+  "schema_version": "xone.open_source_sample.v1",
+  "source_url": "https://github.com/upstash/context7",
+  "collected_at": "2026-06-14",
+  "stars": 57304,
+  "forks": 2706,
+  "sample_type": "mcp-server-examples",
+  "observed_pattern": "Documentation context MCP-style service used by AI coding tools.",
+  "expected_xone_behavior": "Classify documentation retrieval and network/context dependencies as review context.",
+  "feedback_classification": "catalog-update"
+}
+

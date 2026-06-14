@@ -11,6 +11,7 @@ from xone_cli.evidence import build_failure_packet, collect_evidence, collect_fo
 from xone_cli.lab import render_evidence_loop_lab
 from xone_cli.risk import render_risk_context
 from xone_cli.runbook import write_runbook
+from xone_cli.release import print_release_report, verify_release
 from xone_cli.tooling import doctor_status
 
 
@@ -53,6 +54,15 @@ def build_parser() -> argparse.ArgumentParser:
     evidence_loop = lab_subparsers.add_parser("evidence-loop", help="render Agent Evidence Loop scenario")
     evidence_loop.add_argument("--output", type=Path, required=True)
     evidence_loop.add_argument("--dry-run", action="store_true")
+
+    release = subparsers.add_parser("release", help="verify local release readiness")
+    release_subparsers = release.add_subparsers(dest="release_command")
+    verify = release_subparsers.add_parser("verify", help="run release/package checks")
+    verify.add_argument("--project-root", type=Path, default=Path("."))
+    verify.add_argument("--build", action="store_true")
+    verify.add_argument("--install", action="store_true")
+    verify.add_argument("--smoke", action="store_true")
+    verify.add_argument("--json", action="store_true")
 
     runbook = subparsers.add_parser("runbook", help="assemble a local X-One evidence runbook")
     _add_evidence_collection_args(runbook)
@@ -114,6 +124,16 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.command == "lab" and args.lab_command == "evidence-loop":
         return render_evidence_loop_lab(output=args.output, dry_run=args.dry_run)
+
+    if args.command == "release" and args.release_command == "verify":
+        report = verify_release(
+            project_root=args.project_root,
+            build=args.build,
+            install=args.install,
+            smoke=args.smoke,
+        )
+        print_release_report(report, as_json=args.json)
+        return 0 if report["ok"] else 1
 
     if args.command == "runbook":
         code, report, message = collect_for_runbook(

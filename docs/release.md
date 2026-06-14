@@ -6,12 +6,10 @@ Required checks:
 
 ```bash
 python -m pytest -q
-python -m build
-python -m venv /tmp/xone-cli-release-venv
-/tmp/xone-cli-release-venv/bin/python -m pip install dist/*.whl
-/tmp/xone-cli-release-venv/bin/xone --version
-/tmp/xone-cli-release-venv/bin/xone doctor --json
+python -m pip install -e '.[dev]'
+xone release verify --build --install --smoke
 ```
 
-PyPI publishing must be tag-gated. TestPyPI publishing must use the `testpypi` environment.
+`xone release verify` builds the package, installs the wheel into a temporary virtual environment, and runs smoke checks from the installed `xone` entry point.
 
+PyPI publishing must be tag-gated. TestPyPI publishing must use the `testpypi` environment.

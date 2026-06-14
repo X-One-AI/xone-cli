@@ -26,7 +26,7 @@ xone doctor
 
 ```bash
 xone doctor
-xone runbook --dry-run
+xone runbook --base main --head HEAD --dry-run
 ```
 
 `xone-cli` 编排这些 X-One 工具：
@@ -50,4 +50,3 @@ xone runbook --dry-run
 - [安装](./docs/install.md)
 - [发布](./docs/release.md)
 - [开源反馈 Ledger](./docs/feedback/open-source-feedback-ledger.md)
-

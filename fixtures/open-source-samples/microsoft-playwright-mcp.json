@@ -1,0 +1,12 @@
+{
+  "schema_version": "xone.open_source_sample.v1",
+  "source_url": "https://github.com/microsoft/playwright-mcp",
+  "collected_at": "2026-06-14",
+  "stars": 33878,
+  "forks": 2798,
+  "sample_type": "mcp-server-examples",
+  "observed_pattern": "Browser automation MCP server with local browser control and network-facing workflows.",
+  "expected_xone_behavior": "Surface browser automation and network context as review evidence, especially in PR workflows.",
+  "feedback_classification": "scenario-request"
+}
+
