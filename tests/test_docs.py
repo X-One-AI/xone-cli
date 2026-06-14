@@ -27,15 +27,16 @@ def test_docs_and_package_metadata_stay_aligned():
     assert "git clone --depth 1 https://github.com/owner/repo" in Path("docs/install.md").read_text(encoding="utf-8")
     assert "xone release verify --build --install --smoke" in Path("docs/release.md").read_text(encoding="utf-8")
     assert 'name = "xone-cli"' in pyproject
-    assert 'version = "0.1.1"' in pyproject
-    assert __version__ == "0.1.1"
-    assert "## 0.1.1" in changelog
+    assert 'version = "0.1.2"' in pyproject
+    assert __version__ == "0.1.2"
+    assert "## 0.1.2" in changelog
     assert 'xone = "xone_cli.cli:entrypoint"' in pyproject
     assert "python -m pytest -q" in ci
     assert "xone runbook --base HEAD~1 --head HEAD --dry-run" in ci
     assert "environment: testpypi" in publish
     assert "startsWith(github.ref, 'refs/tags/v')" in publish
     assert "doctor --install-plan" in changelog
+    assert "recommended X-One tool versions" in changelog
     assert "auto-detect the local repository default branch" in changelog
     assert "Do not make hidden network calls" in production
     assert "Keep top-level commands small" in main_entry

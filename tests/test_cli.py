@@ -12,7 +12,7 @@ def _fake_tool(bin_dir: Path, name: str, body: str = "echo tool") -> None:
 
 def test_version_outputs_package_version(capsys):
     assert main(["--version"]) == 0
-    assert capsys.readouterr().out.strip() == "xone 0.1.1"
+    assert capsys.readouterr().out.strip() == "xone 0.1.2"
 
 
 def test_doctor_json_reports_required_tools(tmp_path, monkeypatch, capsys):
@@ -35,9 +35,13 @@ def test_doctor_install_plan_outputs_scenario_commands(capsys):
     output = capsys.readouterr().out
     assert "X-One install plan" in output
     assert "evidence-loop" in output
-    assert "python -m pip install xone-agent-pr-evidence xone-agent-failure-packet xone-mcp-risk-index xone-ai-incident-lab" in output
+    assert "python -m pip install xone-agent-pr-evidence==0.4.2 xone-agent-failure-packet==0.4.2 xone-mcp-risk-index==0.3.1 xone-ai-incident-lab==0.2.2" in output
+    assert "when: review an agent PR, create a redacted failure packet, attach MCP risk context, or run a safe local lab" in output
+    assert "next: xone runbook --head HEAD --dry-run" in output
     assert "mcp-review" in output
+    assert "next: xone risk context --catalog mcp-risk-index.catalog.yml --output mcp-risk-context.md" in output
     assert "incident-lab" in output
+    assert "next: xone lab evidence-loop --output agent-evidence-loop.md" in output
 
 
 def test_runbook_dry_run_is_available(capsys):

@@ -24,6 +24,13 @@ PACKAGE_BY_TOOL = {
     "ai-incident-lab": "xone-ai-incident-lab",
 }
 
+RECOMMENDED_VERSION_BY_TOOL = {
+    "agent-pr-evidence": "0.4.2",
+    "agent-failure-packet": "0.4.2",
+    "mcp-risk-index": "0.3.1",
+    "ai-incident-lab": "0.2.2",
+}
+
 INSTALL_PLAN_GROUPS = {
     "evidence-loop": (
         "agent-pr-evidence",
@@ -36,6 +43,21 @@ INSTALL_PLAN_GROUPS = {
     "all": REQUIRED_TOOLS,
 }
 
+INSTALL_PLAN_GUIDANCE = {
+    "evidence-loop": {
+        "when": "review an agent PR, create a redacted failure packet, attach MCP risk context, or run a safe local lab",
+        "next": "xone runbook --head HEAD --dry-run",
+    },
+    "mcp-review": {
+        "when": "attach evidence-backed MCP risk context without making an allow/deny decision",
+        "next": "xone risk context --catalog mcp-risk-index.catalog.yml --output mcp-risk-context.md",
+    },
+    "incident-lab": {
+        "when": "practice the Agent Evidence Loop with safe-local scenarios",
+        "next": "xone lab evidence-loop --output agent-evidence-loop.md",
+    },
+}
+
 
 def find_tool(name: str) -> str | None:
     return shutil.which(name)
@@ -43,18 +65,31 @@ def find_tool(name: str) -> str | None:
 
 def install_hint(name: str) -> str:
     package = PACKAGE_BY_TOOL.get(name, name)
-    return f"python -m pip install {package}"
+    version = RECOMMENDED_VERSION_BY_TOOL.get(name)
+    pinned = f"{package}=={version}" if version else package
+    return f"python -m pip install {pinned}"
 
 
-def install_plan(profile: str = "all") -> list[tuple[str, str]]:
+def install_plan(profile: str = "all") -> list[dict[str, str]]:
     if profile == "all":
         groups = ("evidence-loop", "mcp-review", "incident-lab")
     else:
         groups = (profile,)
     plan = []
     for group in groups:
-        packages = [PACKAGE_BY_TOOL[name] for name in INSTALL_PLAN_GROUPS[group]]
-        plan.append((group, f"python -m pip install {' '.join(packages)}"))
+        packages = [
+            f"{PACKAGE_BY_TOOL[name]}=={RECOMMENDED_VERSION_BY_TOOL[name]}"
+            for name in INSTALL_PLAN_GROUPS[group]
+        ]
+        guidance = INSTALL_PLAN_GUIDANCE[group]
+        plan.append(
+            {
+                "name": group,
+                "command": f"python -m pip install {' '.join(packages)}",
+                "when": guidance["when"],
+                "next": guidance["next"],
+            }
+        )
     return plan
 
 
