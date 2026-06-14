@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xone-cli"
+version = "0.1.0"
+description = "Unified CLI entry point for X-One Agent Evidence Loop workflows."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+  { name = "X-One-AI" }
+]
+keywords = ["ai", "agents", "devsecops", "mcp", "cli"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Security",
+  "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2.2",
+  "pytest>=8.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/X-One-AI/xone-cli"
+Repository = "https://github.com/X-One-AI/xone-cli"
+Issues = "https://github.com/X-One-AI/xone-cli/issues"
+
+[project.scripts]
+xone = "xone_cli.cli:entrypoint"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
