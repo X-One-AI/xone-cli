@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4
+
+- Add a `curl` fallback for GitHub metadata refresh when Python's local certificate store cannot verify the GitHub API certificate.
+- Keep open-source adoption evaluation from failing on macOS/Python certificate-store drift.
+
 ## 0.1.3
 
 - Add `xone eval open-source` for repeatable, sanitized open-source adoption evaluation.

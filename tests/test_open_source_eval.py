@@ -1,7 +1,10 @@
 import json
+import urllib.error
 from datetime import date
+from types import SimpleNamespace
 
 from xone_cli.cli import main
+from xone_cli.open_source_eval import fetch_github_metadata
 
 
 def test_eval_open_source_json_outputs_sanitized_records(tmp_path, monkeypatch):
@@ -137,3 +140,34 @@ def test_eval_open_source_records_clone_failure_without_crashing(tmp_path, monke
     assert failed_command["result"] == "fail"
     assert failed_command["mode"] == "read-only"
     assert payload["records"][1]["commands_run"][1]["name"] == "runbook-dry-run"
+
+
+def test_fetch_github_metadata_falls_back_when_urllib_cert_fails(monkeypatch):
+    def fail_urlopen(_request, timeout):
+        raise urllib.error.URLError("certificate verify failed")
+
+    def fake_run(command, check, text, stdout, stderr):
+        assert command == ["curl", "-fsSL", "https://api.github.com/repos/openai/codex"]
+        return SimpleNamespace(
+            stdout=json.dumps(
+                {
+                    "full_name": "openai/codex",
+                    "html_url": "https://github.com/openai/codex",
+                    "stargazers_count": 1,
+                    "forks_count": 2,
+                    "open_issues_count": 3,
+                    "default_branch": "main",
+                    "language": "Rust",
+                }
+            ),
+            stderr="",
+        )
+
+    monkeypatch.setattr("xone_cli.open_source_eval.urllib.request.urlopen", fail_urlopen)
+    monkeypatch.setattr("xone_cli.open_source_eval.subprocess.run", fake_run)
+
+    metadata = fetch_github_metadata("openai/codex", date(2026, 6, 15))
+
+    assert metadata["source"] == "openai/codex"
+    assert metadata["snapshot_date"] == "2026-06-15"
+    assert metadata["stars"] == 1

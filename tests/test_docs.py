@@ -30,9 +30,9 @@ def test_docs_and_package_metadata_stay_aligned():
     assert "xone eval open-source --repos repos.txt" in Path("docs/install.md").read_text(encoding="utf-8")
     assert "xone release verify --build --install --smoke" in Path("docs/release.md").read_text(encoding="utf-8")
     assert 'name = "xone-cli"' in pyproject
-    assert 'version = "0.1.3"' in pyproject
-    assert __version__ == "0.1.3"
-    assert "## 0.1.3" in changelog
+    assert 'version = "0.1.4"' in pyproject
+    assert __version__ == "0.1.4"
+    assert "## 0.1.4" in changelog
     assert 'xone = "xone_cli.cli:entrypoint"' in pyproject
     assert "python -m pytest -q" in ci
     assert "xone runbook --base HEAD~1 --head HEAD --dry-run" in ci

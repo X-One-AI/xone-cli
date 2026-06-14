@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from datetime import date
@@ -147,12 +148,7 @@ def normalize_repo_ref(value: str) -> str:
 
 
 def fetch_github_metadata(repo: str, snapshot_date: date) -> dict:
-    request = urllib.request.Request(
-        f"https://api.github.com/repos/{repo}",
-        headers={"Accept": "application/vnd.github+json", "User-Agent": "xone-cli-open-source-eval"},
-    )
-    with urllib.request.urlopen(request, timeout=20) as response:
-        payload = json.load(response)
+    payload = _fetch_github_payload(repo)
     return {
         "source": payload["full_name"],
         "source_url": payload["html_url"],
@@ -163,6 +159,28 @@ def fetch_github_metadata(repo: str, snapshot_date: date) -> dict:
         "default_branch": payload["default_branch"],
         "language": payload.get("language"),
     }
+
+
+def _fetch_github_payload(repo: str) -> dict:
+    request = urllib.request.Request(
+        f"https://api.github.com/repos/{repo}",
+        headers={"Accept": "application/vnd.github+json", "User-Agent": "xone-cli-open-source-eval"},
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=20) as response:
+            return json.load(response)
+    except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        try:
+            completed = subprocess.run(
+                ["curl", "-fsSL", f"https://api.github.com/repos/{repo}"],
+                check=True,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+        except (FileNotFoundError, subprocess.CalledProcessError) as fallback_exc:
+            raise RuntimeError(f"Unable to fetch GitHub metadata for {repo}: {exc}; fallback failed: {fallback_exc}") from fallback_exc
+        return json.loads(completed.stdout)
 
 
 def clone_repo(record: dict, root: Path) -> Path:
