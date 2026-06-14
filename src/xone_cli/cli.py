@@ -6,6 +6,7 @@ import sys
 from collections.abc import Sequence
 
 from xone_cli import __version__
+from xone_cli.tooling import doctor_status
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -33,11 +34,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
 
     if args.command == "doctor":
-        payload = {"schema_version": "xone.doctor.v1", "status": "not-implemented", "dry_run": args.dry_run}
+        report = doctor_status()
+        payload = report.to_dict()
+        payload["dry_run"] = args.dry_run
         if args.json:
             print(json.dumps(payload, indent=2, sort_keys=True))
         else:
-            print("xone doctor: not implemented")
+            _print_doctor(report)
         return 0
 
     if args.command == "runbook":
@@ -55,3 +58,13 @@ def main(argv: Sequence[str] | None = None) -> int:
 def entrypoint() -> None:
     raise SystemExit(main())
 
+
+def _print_doctor(report) -> None:
+    print("X-One toolchain")
+    for tool in report.tools:
+        status = "ok" if tool.available else "missing"
+        print(f"- {tool.name}: {status}")
+        if tool.version:
+            print(f"  version: {tool.version}")
+        if not tool.available:
+            print(f"  install: {tool.install_hint}")
