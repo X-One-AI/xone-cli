@@ -1,0 +1,12 @@
+{
+  "schema_version": "xone.open_source_sample.v1",
+  "source_url": "https://github.com/docker/mcp-gateway",
+  "collected_at": "2026-06-14",
+  "stars": 1452,
+  "forks": 246,
+  "sample_type": "security-sensitive",
+  "observed_pattern": "Docker MCP gateway and CLI plugin surface involving containerized tool routing.",
+  "expected_xone_behavior": "Exercise Docker, network, and gateway boundary review questions.",
+  "feedback_classification": "catalog-update"
+}
+

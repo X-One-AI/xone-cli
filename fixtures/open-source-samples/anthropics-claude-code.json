@@ -1,0 +1,12 @@
+{
+  "schema_version": "xone.open_source_sample.v1",
+  "source_url": "https://github.com/anthropics/claude-code",
+  "collected_at": "2026-06-14",
+  "stars": 132258,
+  "forks": 21413,
+  "sample_type": "ai-coding-tool",
+  "observed_pattern": "Agentic coding tool that operates in terminal and understands local codebases.",
+  "expected_xone_behavior": "Use for installation, local workflow, and failure handoff expectation comparisons.",
+  "feedback_classification": "scenario-request"
+}
+

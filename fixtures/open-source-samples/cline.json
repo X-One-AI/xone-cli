@@ -1,0 +1,12 @@
+{
+  "schema_version": "xone.open_source_sample.v1",
+  "source_url": "https://github.com/cline/cline",
+  "collected_at": "2026-06-14",
+  "stars": 63235,
+  "forks": 6677,
+  "sample_type": "ai-coding-tool",
+  "observed_pattern": "Autonomous coding agent distributed as SDK, IDE extension, and CLI assistant.",
+  "expected_xone_behavior": "Use for agent-generated PR evidence and failure packet workflow examples.",
+  "feedback_classification": "adapter-request"
+}
+

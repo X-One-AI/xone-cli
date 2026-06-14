@@ -1,0 +1,12 @@
+{
+  "schema_version": "xone.open_source_sample.v1",
+  "source_url": "https://github.com/Aider-AI/aider",
+  "collected_at": "2026-06-14",
+  "stars": 46171,
+  "forks": 4580,
+  "sample_type": "ai-coding-tool",
+  "observed_pattern": "Terminal AI pair programming workflow that modifies local repositories.",
+  "expected_xone_behavior": "Exercise local git diff evidence collection and test-evidence expectations.",
+  "feedback_classification": "scenario-request"
+}
+

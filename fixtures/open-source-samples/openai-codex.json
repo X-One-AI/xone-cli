@@ -1,0 +1,12 @@
+{
+  "schema_version": "xone.open_source_sample.v1",
+  "source_url": "https://github.com/openai/codex",
+  "collected_at": "2026-06-14",
+  "stars": 90890,
+  "forks": 13410,
+  "sample_type": "ai-coding-tool",
+  "observed_pattern": "Terminal coding agent with local codebase operations.",
+  "expected_xone_behavior": "Use for evidence loop messaging, failure packet examples, and installation experience comparisons.",
+  "feedback_classification": "scenario-request"
+}
+

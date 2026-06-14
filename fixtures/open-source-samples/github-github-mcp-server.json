@@ -1,0 +1,12 @@
+{
+  "schema_version": "xone.open_source_sample.v1",
+  "source_url": "https://github.com/github/github-mcp-server",
+  "collected_at": "2026-06-14",
+  "stars": 30650,
+  "forks": 4381,
+  "sample_type": "mcp-server-examples",
+  "observed_pattern": "Official GitHub MCP server with token-mediated repository operations.",
+  "expected_xone_behavior": "Treat token scope and repository mutation capabilities as review questions, not safe/unsafe labels.",
+  "feedback_classification": "catalog-update"
+}
+
