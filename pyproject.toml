@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "xone-cli"
-version = "0.1.0"
+version = "0.1.1"
 description = "Unified CLI entry point for X-One Agent Evidence Loop workflows."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -49,4 +49,3 @@ where = ["src"]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
-
