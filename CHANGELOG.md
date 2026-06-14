@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.3
+
+- Add `xone eval open-source` for repeatable, sanitized open-source adoption evaluation.
+- Support metadata-only evaluation and optional `--clone-root` shallow public clone evaluation.
+- Keep the evaluator read-only by default and document that it does not run third-party scripts, containers, tests, or project commands.
+
 ## 0.1.2
 
 - Pin `xone doctor --install-plan` to the current recommended X-One tool versions.

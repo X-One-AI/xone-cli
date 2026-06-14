@@ -12,6 +12,8 @@ Rules:
 
 The first ledger entries live in `fixtures/open-source-samples/`.
 
+Use `xone eval open-source --repos repos.txt --output evaluation.json --format json` to refresh sanitized evaluation records. Add `--clone-root <dir>` only when shallow public clones are acceptable for the review.
+
 | Source | Stars | Forks | Type | Feedback |
 | --- | ---: | ---: | --- | --- |
 | modelcontextprotocol/servers | 87186 | 10998 | mcp-server-examples | catalog-update |

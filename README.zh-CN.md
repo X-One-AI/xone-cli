@@ -34,6 +34,14 @@ xone runbook --head HEAD --dry-run
 
 `xone runbook` 会自动探测本地仓库默认分支。当前还不直接接收远程 GitHub URL；请先 clone 仓库，再用 `--repo` 传本地路径。
 
+如果要重复执行开源样本替代真实用户反馈评测，可以使用只读评测入口：
+
+```bash
+xone eval open-source --repos repos.txt --output evaluation.md --format markdown
+```
+
+当你希望 X-One shallow clone 公开仓库并只运行 X-One dry-run 命令时，增加 `--clone-root .xone-eval-clones`。它不会运行第三方安装脚本、测试、容器或项目命令。
+
 `xone-cli` 编排这些 X-One 工具：
 
 - `agent-pr-evidence`
@@ -54,7 +62,8 @@ xone runbook --head HEAD --dry-run
 - 不自动发布 GitHub 评论。
 - 不自动修改仓库。
 - 不做 runtime allow/deny enforcement。
-- 不做隐藏网络调用。
+- 不运行第三方项目脚本。
+- `xone eval open-source` 只会在用户显式执行该命令时调用 GitHub API 和 `git clone --depth 1`。
 
 ## 文档
 
