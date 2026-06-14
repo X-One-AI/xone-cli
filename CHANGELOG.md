@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.1
 
 - Add scenario-based `xone doctor --install-plan` guidance.
 - Let `xone runbook` auto-detect the local repository default branch when `--base` is omitted.

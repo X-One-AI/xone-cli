@@ -12,7 +12,7 @@ def _fake_tool(bin_dir: Path, name: str, body: str = "echo tool") -> None:
 
 def test_version_outputs_package_version(capsys):
     assert main(["--version"]) == 0
-    assert capsys.readouterr().out.strip() == "xone 0.1.0"
+    assert capsys.readouterr().out.strip() == "xone 0.1.1"
 
 
 def test_doctor_json_reports_required_tools(tmp_path, monkeypatch, capsys):
