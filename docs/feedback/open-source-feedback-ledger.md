@@ -6,7 +6,7 @@ Rules:
 
 - Record source URL and observation, not raw sensitive configuration.
 - Do not label third-party projects as safe or unsafe.
-- Classify observations as false-positive, false-negative, adapter-request, scenario-request, or catalog-update.
+- Classify observations as false-positive, false-negative, adapter-request, scenario-request, catalog-update, config-discovery, default-branch, install-friction, agent-instruction-signal, runtime-capability-risk, or cli-ux-improvement.
 
 ## Samples
 

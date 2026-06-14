@@ -4,6 +4,7 @@ import json
 import tempfile
 from pathlib import Path
 
+from xone_cli.repo_context import detect_default_base, validate_local_repo
 from xone_cli.tooling import run_command
 
 
@@ -104,19 +105,23 @@ def build_failure_packet(*, input_path: Path, output: Path, profile: str, dry_ru
 def collect_for_runbook(
     *,
     repo: str,
-    base: str,
+    base: str | None,
     head: str,
     test_logs: list[str],
     profile: str,
     dry_run: bool,
 ) -> tuple[int, dict | None, str]:
+    valid, validation_message = validate_local_repo(repo)
+    if not valid:
+        return 2, None, validation_message
+    resolved_base = base or detect_default_base(repo)
     command = [
         "agent-pr-evidence",
         "collect",
         "--repo",
         repo,
         "--base",
-        base,
+        resolved_base,
         "--head",
         head,
         "--profile",
@@ -135,4 +140,3 @@ def collect_for_runbook(
         if result.returncode != 0:
             return result.returncode, None, result.stderr or result.stdout
         return 0, json.loads(output.read_text(encoding="utf-8")), ""
-

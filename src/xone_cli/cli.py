@@ -12,7 +12,7 @@ from xone_cli.lab import render_evidence_loop_lab
 from xone_cli.risk import render_risk_context
 from xone_cli.runbook import write_runbook
 from xone_cli.release import print_release_report, verify_release
-from xone_cli.tooling import doctor_status
+from xone_cli.tooling import doctor_status, install_plan
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -23,6 +23,13 @@ def build_parser() -> argparse.ArgumentParser:
     doctor = subparsers.add_parser("doctor", help="check local X-One tool availability")
     doctor.add_argument("--json", action="store_true", help="write machine-readable status")
     doctor.add_argument("--dry-run", action="store_true", help="show checks without running them")
+    doctor.add_argument(
+        "--install-plan",
+        nargs="?",
+        const="all",
+        choices=("all", "evidence-loop", "mcp-review", "incident-lab"),
+        help="show scenario-based install commands",
+    )
 
     evidence = subparsers.add_parser("evidence", help="work with PR evidence and failure packets")
     evidence_subparsers = evidence.add_subparsers(dest="evidence_command")
@@ -65,7 +72,7 @@ def build_parser() -> argparse.ArgumentParser:
     verify.add_argument("--json", action="store_true")
 
     runbook = subparsers.add_parser("runbook", help="assemble a local X-One evidence runbook")
-    _add_evidence_collection_args(runbook)
+    _add_evidence_collection_args(runbook, require_base=False)
     runbook.add_argument("--output", type=Path)
     runbook.add_argument("--dry-run", action="store_true", help="show underlying commands without running them")
     runbook.add_argument("--json", action="store_true", help="write machine-readable summary")
@@ -82,6 +89,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
 
     if args.command == "doctor":
+        if args.install_plan:
+            _print_install_plan(args.install_plan)
+            return 0
         report = doctor_status()
         payload = report.to_dict()
         payload["dry_run"] = args.dry_run
@@ -181,9 +191,15 @@ def _print_doctor(report) -> None:
             print(f"  install: {tool.install_hint}")
 
 
-def _add_evidence_collection_args(parser: argparse.ArgumentParser) -> None:
+def _print_install_plan(profile: str) -> None:
+    print("X-One install plan")
+    for name, command in install_plan(profile):
+        print(f"- {name}: {command}")
+
+
+def _add_evidence_collection_args(parser: argparse.ArgumentParser, *, require_base: bool = True) -> None:
     parser.add_argument("--repo", default=".", help="git repository path")
-    parser.add_argument("--base", required=True, help="base git ref")
+    parser.add_argument("--base", required=require_base, help="base git ref; runbook can auto-detect when omitted")
     parser.add_argument("--head", required=True, help="head git ref")
     parser.add_argument("--test-log", action="append", default=[], help="test log path; repeatable")
     parser.add_argument("--profile", choices=("default", "strict"), default="strict")

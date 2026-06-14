@@ -26,8 +26,11 @@ xone doctor
 
 ```bash
 xone doctor
-xone runbook --base main --head HEAD --dry-run
+xone doctor --install-plan
+xone runbook --head HEAD --dry-run
 ```
+
+`xone runbook` 会自动探测本地仓库默认分支。当前还不直接接收远程 GitHub URL；请先 clone 仓库，再用 `--repo` 传本地路径。
 
 `xone-cli` 编排这些 X-One 工具：
 
