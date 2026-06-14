@@ -26,8 +26,11 @@ xone doctor
 
 ```bash
 xone doctor
-xone runbook --base main --head HEAD --dry-run
+xone doctor --install-plan
+xone runbook --head HEAD --dry-run
 ```
+
+`xone runbook` auto-detects the local repository default branch. Remote GitHub URLs are not accepted yet; clone the repository first, then pass the local path with `--repo`.
 
 `xone-cli` orchestrates these X-One tools:
 

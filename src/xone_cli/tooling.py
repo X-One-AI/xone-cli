@@ -24,6 +24,18 @@ PACKAGE_BY_TOOL = {
     "ai-incident-lab": "xone-ai-incident-lab",
 }
 
+INSTALL_PLAN_GROUPS = {
+    "evidence-loop": (
+        "agent-pr-evidence",
+        "agent-failure-packet",
+        "mcp-risk-index",
+        "ai-incident-lab",
+    ),
+    "mcp-review": ("mcp-risk-index",),
+    "incident-lab": ("ai-incident-lab",),
+    "all": REQUIRED_TOOLS,
+}
+
 
 def find_tool(name: str) -> str | None:
     return shutil.which(name)
@@ -32,6 +44,18 @@ def find_tool(name: str) -> str | None:
 def install_hint(name: str) -> str:
     package = PACKAGE_BY_TOOL.get(name, name)
     return f"python -m pip install {package}"
+
+
+def install_plan(profile: str = "all") -> list[tuple[str, str]]:
+    if profile == "all":
+        groups = ("evidence-loop", "mcp-review", "incident-lab")
+    else:
+        groups = (profile,)
+    plan = []
+    for group in groups:
+        packages = [PACKAGE_BY_TOOL[name] for name in INSTALL_PLAN_GROUPS[group]]
+        plan.append((group, f"python -m pip install {' '.join(packages)}"))
+    return plan
 
 
 def run_command(

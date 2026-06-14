@@ -29,6 +29,25 @@ def test_doctor_json_reports_required_tools(tmp_path, monkeypatch, capsys):
     assert payload["tools"][1]["available"] is False
 
 
+def test_doctor_install_plan_outputs_scenario_commands(capsys):
+    assert main(["doctor", "--install-plan"]) == 0
+
+    output = capsys.readouterr().out
+    assert "X-One install plan" in output
+    assert "evidence-loop" in output
+    assert "python -m pip install xone-agent-pr-evidence xone-agent-failure-packet xone-mcp-risk-index xone-ai-incident-lab" in output
+    assert "mcp-review" in output
+    assert "incident-lab" in output
+
+
 def test_runbook_dry_run_is_available(capsys):
     assert main(["runbook", "--base", "main", "--head", "HEAD", "--dry-run"]) == 0
     assert "agent-pr-evidence collect" in capsys.readouterr().out
+
+
+def test_runbook_rejects_remote_repo_url_instead_of_dry_run_false_positive(capsys):
+    assert main(["runbook", "--repo", "https://github.com/openai/codex", "--head", "HEAD", "--dry-run"]) == 2
+
+    output = capsys.readouterr().out
+    assert "Remote repository URLs are not supported by runbook yet" in output
+    assert "git clone --depth 1 https://github.com/openai/codex" in output

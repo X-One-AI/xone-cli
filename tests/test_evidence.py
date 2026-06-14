@@ -51,3 +51,16 @@ def test_runbook_dry_run_lists_underlying_command(capsys):
     output = capsys.readouterr().out
     assert "agent-pr-evidence collect" in output
     assert "--base main" in output
+
+
+def test_runbook_auto_detects_default_branch_for_local_repo(tmp_path, capsys):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    (repo / ".git").mkdir()
+    (repo / ".git" / "HEAD").write_text("ref: refs/heads/master\n", encoding="utf-8")
+
+    assert main(["runbook", "--repo", str(repo), "--head", "HEAD", "--dry-run"]) == 0
+
+    output = capsys.readouterr().out
+    assert f"--repo {repo}" in output
+    assert "--base master" in output
