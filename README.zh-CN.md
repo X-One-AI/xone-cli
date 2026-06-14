@@ -30,6 +30,8 @@ xone doctor --install-plan
 xone runbook --head HEAD --dry-run
 ```
 
+`xone doctor --install-plan` 会输出按场景分组的安装命令、推荐的 X-One package 版本、适用时机和下一条可尝试的命令。
+
 `xone runbook` 会自动探测本地仓库默认分支。当前还不直接接收远程 GitHub URL；请先 clone 仓库，再用 `--repo` 传本地路径。
 
 `xone-cli` 编排这些 X-One 工具：
@@ -38,6 +40,13 @@ xone runbook --head HEAD --dry-run
 - `agent-failure-packet`
 - `mcp-risk-index`
 - `ai-incident-lab`
+
+当前推荐工具版本：
+
+- `agent-pr-evidence 0.4.2`
+- `agent-failure-packet 0.4.2`
+- `mcp-risk-index 0.3.1`
+- `ai-incident-lab 0.2.2`
 
 ## 边界
 

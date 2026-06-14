@@ -193,8 +193,10 @@ def _print_doctor(report) -> None:
 
 def _print_install_plan(profile: str) -> None:
     print("X-One install plan")
-    for name, command in install_plan(profile):
-        print(f"- {name}: {command}")
+    for item in install_plan(profile):
+        print(f"- {item['name']}: {item['command']}")
+        print(f"  when: {item['when']}")
+        print(f"  next: {item['next']}")
 
 
 def _add_evidence_collection_args(parser: argparse.ArgumentParser, *, require_base: bool = True) -> None:
