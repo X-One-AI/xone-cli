@@ -30,5 +30,5 @@ def test_doctor_json_reports_required_tools(tmp_path, monkeypatch, capsys):
 
 
 def test_runbook_dry_run_is_available(capsys):
-    assert main(["runbook", "--dry-run"]) == 0
-    assert "xone runbook" in capsys.readouterr().out
+    assert main(["runbook", "--base", "main", "--head", "HEAD", "--dry-run"]) == 0
+    assert "agent-pr-evidence collect" in capsys.readouterr().out
